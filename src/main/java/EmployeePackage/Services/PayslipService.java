@@ -36,7 +36,7 @@ public class PayslipService {
     }
 
     public APIResponse getPayslip(int id){
-        if(!employeeService.isExistById(id)) return new APIResponse<>(200,"Payslip Doesn't Exist", null);
+        if(!employeeService.isExistById(id)) return new APIResponse<>(200,"Payslip Doesn't Exist", Collections.EMPTY_LIST);
         return new APIResponse<>(200,"Payslip Retrieved Successfully", payslipRepo.findByemployee((EmployeeEntity) employeeService.getEmployeeById(id).getBody()));
     }
 }

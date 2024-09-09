@@ -26,4 +26,8 @@ public class DepartmentEntity {
     public void setPartialNull(){
         name = null;
     }
+
+    public DepartmentEntity(Integer id) {
+        this.id = id;
+    }
 }

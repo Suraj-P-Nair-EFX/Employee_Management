@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 @Entity
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -14,9 +14,9 @@ import org.hibernate.annotations.CascadeType;
 public class EmployeeEntity {
 
     @Id
-    private int id = -1;
+    private Integer id = null;
     private String name = null;
-    private int age = -1;
+    private Integer age = null;
 
     @JoinColumn(name = "address", referencedColumnName = "id")
     @OneToOne
@@ -28,9 +28,7 @@ public class EmployeeEntity {
     @Cascade(CascadeType.ALL)
     private DepartmentEntity department;
 
-//    @JsonBackReference
-//    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-//    private List<PayslipEntity> payslipId;
+
 
     public void setPartialNull(){
 
@@ -38,9 +36,25 @@ public class EmployeeEntity {
         address.setPartialNull();
     }
 
+    public void updateEntity(EmployeeEntity newEntity){
+        if (newEntity.getName()!=null){
+            this.name = newEntity.getName();
+        }
+        if(newEntity.getDepartment() != null){
+            this.department = newEntity.getDepartment();
+        }
+        if(newEntity.getAge() != null){
+            this.age = newEntity.getAge();
+        }
+
+        if(newEntity.getAge() != null){
+            this.address = newEntity.getAddress();
+        }
+    }
+
 
     public boolean hasDefault(){
-        return name == null || age == -1 || id == -1 || address == null || department == null;
+        return name == null || age == null || id == null || address == null || department == null || department.hasDefault() || address.hasDefault();
     }
 
     public Object thenReturn(EmployeeEntity employee) {
@@ -67,4 +81,6 @@ public class EmployeeEntity {
         this.name = name;
         this.age = age;
     }
+
+
 }

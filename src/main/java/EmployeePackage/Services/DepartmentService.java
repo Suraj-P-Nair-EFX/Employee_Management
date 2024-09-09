@@ -15,7 +15,7 @@ public class DepartmentService extends ValidationServices {
         if(department.hasDefault()) return new APIResponse<>(200.1,"Full Details Not Provided", null);
         if(invalidCharCheck(department.toString())) return new APIResponse<>(200.1,"Invalid Characters Present", null);
         if(departmentRepo.existsById(department.getId())) return new APIResponse<>(200.1,"Department Already Exists", null);
-        return new APIResponse<>(200,"Employee Created Successfully", departmentRepo.save(department));
+        return new APIResponse<>(200,"Department Created Successfully", departmentRepo.save(department));
     }
 
     public APIResponse GetDepartment(int id){

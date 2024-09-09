@@ -14,12 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
 
     APIResponse apiResponse;
-
     @Autowired
     EmployeeService employeeService;
 
     @PostMapping("/employee")
-    ResponseEntity postEmployee(@RequestBody EmployeeEntity employeeEntity){
+    public ResponseEntity postEmployee(@RequestBody EmployeeEntity employeeEntity){
         apiResponse =  employeeService.createEmployeeService(employeeEntity);
         if(apiResponse.getErrorCode()==200) return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
@@ -42,6 +41,13 @@ public class EmployeeController {
     @DeleteMapping("/employee/{id}")
     ResponseEntity deleteEmployee(@PathVariable int id){
         apiResponse = employeeService.deleteEmployee(id);
+        if(apiResponse.getErrorCode()==200) return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+    }
+
+    @PostMapping("/employee/{id}")
+    public ResponseEntity updateEmployee(@RequestBody EmployeeEntity employeeEntity,@PathVariable int id){
+        apiResponse = employeeService.updateEmployee(employeeEntity,id);
         if(apiResponse.getErrorCode()==200) return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }

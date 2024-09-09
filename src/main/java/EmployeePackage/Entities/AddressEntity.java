@@ -35,4 +35,11 @@ public class AddressEntity {
         city = null;
         pincode = null;
     }
+
+    public AddressEntity(String primAddress,String city,Integer pincode) {
+        this.primAddress = primAddress;
+        this.city = city;
+        this.pincode = pincode;
+
+    }
 }
