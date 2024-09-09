@@ -34,7 +34,6 @@ public class EmployeeService extends ValidationServices {
         if(!employeeRepo.existsById(id)) return new APIResponse<>(200.1,"No Employee Found", null);
         EmployeeEntity employee = employeeRepo.findById(id).get();
         return new APIResponse<>(200,"Employee Found Successfully", employee);
-
     }
 
     public APIResponse deleteEmployee(int id){
@@ -52,7 +51,13 @@ public class EmployeeService extends ValidationServices {
         APIResponse apiResponse = getEmployeeById(id);
         if(apiResponse.getErrorCode()== 200) {
             EmployeeEntity existingEntity = ((EmployeeEntity) apiResponse.getBody());
+
             existingEntity.updateEntity(employeeEntity);
+
+            apiResponse = departmentService.GetDepartment(employeeEntity.getDepartment().getId());
+            if(apiResponse.getBody()==null) return apiResponse;
+
+            existingEntity.setDepartment((DepartmentEntity)apiResponse.getBody());
             employeeRepo.save(existingEntity);
             return new APIResponse<>(200,"Employee Updated Successfully", existingEntity);
         }

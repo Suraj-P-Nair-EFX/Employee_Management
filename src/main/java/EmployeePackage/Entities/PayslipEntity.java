@@ -6,26 +6,19 @@ import java.util.Objects;
 
 @Entity
 @Data
-
 public class PayslipEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int payslipId;
-
     private double basicSalary = -1;
     private double allowance = -1;
     private double deductions = -1;
     private double bonus = -1;
-
-
     private double tax = -1;
-
     private int presentDays = -1;
     private int totalDays = -1;
-
     private double finalSalary;
-
     private String month = null;
 
     @ManyToOne

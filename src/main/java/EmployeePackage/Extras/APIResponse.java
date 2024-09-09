@@ -10,5 +10,4 @@ public class APIResponse<T> {
     private double errorCode;
     private String message;
     private T body;
-
 }

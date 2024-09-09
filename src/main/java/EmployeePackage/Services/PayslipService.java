@@ -1,18 +1,11 @@
 package EmployeePackage.Services;
-
-
-
 import java.util.Collections;
-
 import EmployeePackage.Entities.EmployeeEntity;
 import EmployeePackage.Entities.PayslipEntity;
 import EmployeePackage.Extras.APIResponse;
 import EmployeePackage.Repositories.PayslipRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -36,7 +29,12 @@ public class PayslipService {
     }
 
     public APIResponse getPayslip(int id){
-        if(!employeeService.isExistById(id)) return new APIResponse<>(200,"Payslip Doesn't Exist", Collections.EMPTY_LIST);
+        if(!employeeService.isExistById(id)) return new APIResponse<>(200.1,"Payslip Doesn't Exist", Collections.EMPTY_LIST);
         return new APIResponse<>(200,"Payslip Retrieved Successfully", payslipRepo.findByemployee((EmployeeEntity) employeeService.getEmployeeById(id).getBody()));
+    }
+
+    public PayslipEntity deletePayslip(int id, String month) {
+        PayslipEntity payslip = payslipRepo.findByEmployeeAndMonth((EmployeeEntity) employeeService.getEmployeeById(id).getBody(), month);
+        return payslip;
     }
 }

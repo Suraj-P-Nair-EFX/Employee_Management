@@ -11,16 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-
 public class DepartmentEntity {
-
 
     @Id
     private Integer id = null;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name = null;
-
 
     public boolean hasDefault(){return id == null  || name == null;}
     public void setPartialNull(){

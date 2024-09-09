@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,20 +24,26 @@ public class PayslipController {
     ResponseEntity postPayslip(@RequestBody PayslipEntity payslipEntity, @PathVariable int id){
         apiResponse = payslipService.postPayslip(payslipEntity,id);
         if(apiResponse.getErrorCode()==200) return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
-        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
-
 
     @GetMapping("/employee/{id}/payslip")
     ResponseEntity getPayslip(@PathVariable int id){
-        List<PayslipEntity> payslip = (List<PayslipEntity>)payslipService.getPayslip(id).getBody();
-        payslip.forEach(item-> item.getEmployee().setPartialNull());
-        if(payslip.isEmpty()){
-            apiResponse = new APIResponse<>(200.1,"No payslip found", payslip);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
-        }
-        apiResponse = new APIResponse<>(200,"Payslip Retrieved Successfully", payslip);
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
+        apiResponse = payslipService.getPayslip(id);
+        if(apiResponse.getErrorCode()==200) return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+
+        //Setting Unwanted Attributes To Null
+//        List<PayslipEntity> payslip = (List<PayslipEntity>) apiResponse.getBody();
+//        payslip.forEach(item-> item.getEmployee().setPartialNull());
+
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+
+    }
+
+    @DeleteMapping("/employee/{id}/payslip/{month}")
+    ResponseEntity deletePayslip(@PathVariable int id, @PathVariable String month){
+        return ResponseEntity.status(HttpStatus.OK).body(payslipService.deletePayslip(id,month));
     }
 }

@@ -28,8 +28,6 @@ public class EmployeeEntity {
     @Cascade(CascadeType.ALL)
     private DepartmentEntity department;
 
-
-
     public void setPartialNull(){
 
         department.setPartialNull();
@@ -51,7 +49,6 @@ public class EmployeeEntity {
             this.address = newEntity.getAddress();
         }
     }
-
 
     public boolean hasDefault(){
         return name == null || age == null || id == null || address == null || department == null || department.hasDefault() || address.hasDefault();

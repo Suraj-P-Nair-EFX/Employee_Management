@@ -22,6 +22,6 @@ public class DepartmentService extends ValidationServices {
         if(!departmentRepo.existsById(id)){
             return new APIResponse<>(200.1,"Department Doesn't Exist", null);
         }
-        return new APIResponse<>(200,"Department Created Successfully", departmentRepo.findById(id).get());
+        return new APIResponse<>(200,"Department Found Successfully", departmentRepo.findById(id).get());
     }
 }
