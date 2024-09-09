@@ -1,6 +1,9 @@
 package EmployeePackage.Entities;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Objects;
+
 @Entity
 @Data
 
@@ -50,6 +53,15 @@ public class PayslipEntity {
         finalSalary = basicSalary*(presentDays/totalDays) + allowance - deductions + bonus -tax;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PayslipEntity that)) return false;
+        return Objects.equals(month, that.month) && Objects.equals(employee, that.employee);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(month, employee);
+    }
 }

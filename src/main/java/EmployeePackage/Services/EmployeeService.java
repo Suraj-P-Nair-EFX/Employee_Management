@@ -20,7 +20,7 @@ public class EmployeeService extends ValidationServices {
     public APIResponse createEmployeeService(EmployeeEntity employeeEntity){
         if(employeeEntity.hasDefault()) return new APIResponse<>(200.1,"Full Details Not Provided", null);
         if(invalidCharCheck(employeeEntity.toString())) return new APIResponse<>(200.1,"Invalid Characters Present", null);
-        if(employeeRepo.existsById(employeeEntity.getId())) return new APIResponse<>(200.1,"Employee Already Exists", null);
+        if(employeeRepo.existsById(employeeEntity.getId())) return new APIResponse<>(200.1,"Employee Already Exist", null);
 
         APIResponse apiResponse = departmentService.GetDepartment(employeeEntity.getDepartment().getId());
         if(apiResponse.getBody()==null) return apiResponse;
@@ -42,14 +42,14 @@ public class EmployeeService extends ValidationServices {
 
     }
 
-    public EmployeeEntity deleteEmployee(int id){
+    public APIResponse deleteEmployee(int id){
         if(employeeRepo.existsById(id)){
             EmployeeEntity employee = employeeRepo.findById(id).get();
             employeeRepo.deleteById(id);
-            return employee;
+            return new APIResponse<>(200,"Employee Deleted Successfully", (employee));
         }
         else{
-            return null;
+            return new APIResponse<>(200.1,"Employee Not Found", null);
         }
     }
 

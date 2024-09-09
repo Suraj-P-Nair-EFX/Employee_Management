@@ -22,7 +22,7 @@ public class DepartmentEntity {
     private String name = null;
 
 
-    boolean hasDefault(){return id == null  || name == null;}
+    public boolean hasDefault(){return id == null  || name == null;}
     public void setPartialNull(){
         name = null;
     }
