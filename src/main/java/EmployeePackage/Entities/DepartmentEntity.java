@@ -1,12 +1,12 @@
 package EmployeePackage.Entities;
 
+import EmployeePackage.Extras.CustomException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
 @Entity
-@Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,14 +17,24 @@ public class DepartmentEntity {
     private Integer id = null;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Getter
     private String name = null;
 
-    public boolean hasDefault(){return id == null  || name == null;}
+    public void hasDefault(){
+        if(id == null  || name == null){
+            throw new CustomException(200.1,"Has Default Department");
+        }
+    }
+
     public void setPartialNull(){
         name = null;
     }
 
-    public DepartmentEntity(Integer id) {
-        this.id = id;
+    public Integer getId() {
+        if(id==null){
+            throw new CustomException(200.1,"Department ID not Entered");
+        }
+        return id;
     }
+
 }

@@ -1,4 +1,5 @@
 package EmployeePackage.Entities;
+import EmployeePackage.Extras.CustomException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +26,11 @@ public class AddressEntity {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer pincode = null;
 
-    boolean hasDefault(){return pincode == null || city == null || primAddress == null;}
+    void hasDefault(){
+        if(pincode == null || city == null || primAddress == null){
+            throw new CustomException(200.1,"Has Default in Address");
+        }
+    }
 
     public void setPartialNull(){
         primAddress = null;

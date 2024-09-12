@@ -1,6 +1,8 @@
 package EmployeePackage.Entities;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.Objects;
 
@@ -22,7 +24,7 @@ public class PayslipEntity {
     private String month = null;
 
     @ManyToOne
-    @JoinColumn(name = "employee",nullable = false)
+    @JoinColumn(name = "employee_id", nullable = false)
     private EmployeeEntity employee;
 
     public boolean hasDefault(){
