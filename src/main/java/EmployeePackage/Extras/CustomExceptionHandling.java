@@ -11,7 +11,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class CustomExceptionHandling extends RuntimeException{
 
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
-    public ResponseEntity<APIResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) throws CustomException{
+    public ResponseEntity<APIResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
         APIResponse apiResponse = new APIResponse(400,"Invalid Input",null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
     }
@@ -21,14 +21,5 @@ public class CustomExceptionHandling extends RuntimeException{
         APIResponse apiResponse = new APIResponse(ex.getErrorCode(),ex.getMessage(),null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
     }
-
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity globalExceptionHandler(Exception ex){
-        APIResponse apiResponse = new APIResponse(500,ex.getMessage(),null);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
-    }
-
-
-
 
 }

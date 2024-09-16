@@ -51,7 +51,7 @@
 //    public void testCreateEmployee_NoDepartment_BadRequest() {
 //        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);
 //        DepartmentEntity department = new DepartmentEntity(1, "HR");
-//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department);
+//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department,null);
 //
 //        when(departmentService.GetDepartment(department.getId())).thenReturn(new APIResponse<>(200.1,"Department Doesn't Exist", null));
 //        when(employeeRepo.save(employee)).thenReturn(employee);
@@ -78,7 +78,7 @@
 //    public void testGetEmployeeById_Success() {
 //        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);
 //        DepartmentEntity department = new DepartmentEntity(1, "HR");
-//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department);
+//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department,null);
 //
 //        when(employeeRepo.existsById(employee.getId())).thenReturn(true);
 //        when(employeeRepo.findById(employee.getId())).thenReturn(Optional.of(employee));
@@ -93,7 +93,7 @@
 //    public void testDeleteEmployee_Success() {
 //        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);
 //        DepartmentEntity department = new DepartmentEntity(1, "HR");
-//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department);
+//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department,null);
 //
 //        when(employeeRepo.existsById(employee.getId())).thenReturn(true);
 //        when(employeeRepo.findById(employee.getId())).thenReturn(Optional.of(employee));
@@ -108,8 +108,8 @@
 //    public void testUpdateEmployee_Success() {
 //        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);
 //        DepartmentEntity department = new DepartmentEntity(1, "HR");
-//        EmployeeEntity existingEmployee = new EmployeeEntity(1, "John Doe", 30, address, department);
-//        EmployeeEntity updatedEmployee = new EmployeeEntity(1, "John Smith", 35, address, department);
+//        EmployeeEntity existingEmployee = new EmployeeEntity(1, "John Doe", 30, address, department,null);
+//        EmployeeEntity updatedEmployee = new EmployeeEntity(1, "John Smith", 35, address, department,null);
 //
 //        when(employeeRepo.existsById(existingEmployee.getId())).thenReturn(true);
 //        when(employeeRepo.findById(existingEmployee.getId())).thenReturn(Optional.of(existingEmployee));

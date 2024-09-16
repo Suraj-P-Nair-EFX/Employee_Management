@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class DepartmentController {
     APIResponse apiResponse;
 
-    DepartmentService departmentService = new DepartmentService();
+    @Autowired
+    DepartmentService departmentService;
 
     @PostMapping("/department")
     ResponseEntity postCreateDepartment(@RequestBody DepartmentEntity departmentEntity){

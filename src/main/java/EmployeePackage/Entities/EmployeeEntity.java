@@ -24,7 +24,7 @@ public class EmployeeEntity {
     @Getter
     private String name = null;
     @Getter
-    private Integer age = null;
+    private String age = null;
 
     @JoinColumn(name = "address", referencedColumnName = "id")
     @OneToOne
@@ -38,6 +38,7 @@ public class EmployeeEntity {
     @JsonIgnore
     @Cascade(CascadeType.ALL)
     @OneToMany(mappedBy = "employee", orphanRemoval = true)
+    @Getter
     private List<PayslipEntity> payslips;
 
     public void setPartialNull(){
@@ -45,18 +46,11 @@ public class EmployeeEntity {
         CompletableFuture.runAsync(address::setPartialNull);
     }
 
-    public void updateEntity(EmployeeEntity newEntity) {
-        Optional.ofNullable(newEntity.getName()).ifPresent(this::setName);
-        //Optional.ofNullable(newEntity.getDepartment()).ifPresent(this::setDepartment);
-        Optional.ofNullable(newEntity.getAge()).ifPresent(this::setAge);
-        //Optional.ofNullable(newEntity.getAddress()).ifPresent(this::setAddress);
-    }
-
     public void hasDefault(){
         CompletableFuture.runAsync(department::hasDefault);
 
-        if(getAddress().getClass() == AddressEntity.class)
-            CompletableFuture.runAsync(address::hasDefault);
+//        if(getAddress().getClass() == AddressEntity.class)
+        CompletableFuture.runAsync(address::hasDefault);
         if(name == null || age == null || id == null){
             throw new CustomException(200.1,"Default values Employee");
         }
@@ -75,5 +69,4 @@ public class EmployeeEntity {
         }
         return department;
     }
-
 }

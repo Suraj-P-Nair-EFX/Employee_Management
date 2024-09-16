@@ -14,21 +14,27 @@ public class DepartmentService extends ValidationServices {
     @Autowired
     DepartmentRepo departmentRepo;
 
+    @Autowired
+    EncryptionService encryptionService;
+
     public APIResponse CreateDepartment(DepartmentEntity department){
         department.hasDefault();
         invalidCharCheck(department.toString());
         if(departmentRepo.existsById(department.getId())){
             throw new CustomException(400,"Department Already Exists");
         }
-        return new APIResponse<>(200, "Department Created Successfully", departmentRepo.save(department));
+        DepartmentEntity encryptedDepartment = encryptDepartment(department);
+
+        return new APIResponse<>(200, "Department Created Successfully", departmentRepo.save(encryptedDepartment));
     }
 
     public APIResponse GetDepartment(int id){
         if(!departmentRepo.existsById(id)){
             throw new CustomException(200.1,"Department Doesn't Exist");
         }
-        return new APIResponse<>(200,"Department Found Successfully", departmentRepo.findById(id).get());
-    }
+        DepartmentEntity encryptedDepartment = departmentRepo.findById(id).get();
+        DepartmentEntity decryptedDepartment = decryptDepartment(encryptedDepartment);
+        return new APIResponse<>(200, "Department Found Successfully", decryptedDepartment);    }
 
     public APIResponse GetAllDepartment(){
         List<DepartmentEntity> departments = departmentRepo.findAll();
@@ -45,5 +51,18 @@ public class DepartmentService extends ValidationServices {
         return new APIResponse<>(200,"Department Found Successfully",department );
     }
 
+    private DepartmentEntity encryptDepartment(DepartmentEntity department) {
+        DepartmentEntity encryptedDepartment = new DepartmentEntity();
+        encryptedDepartment.setId(department.getId());
+        encryptedDepartment.setName(encryptionService.encrypt(department.getName()));
+        return encryptedDepartment;
+    }
+
+    private DepartmentEntity decryptDepartment(DepartmentEntity encryptedDepartment) {
+        DepartmentEntity decryptedDepartment = new DepartmentEntity();
+        decryptedDepartment.setId(encryptedDepartment.getId());
+        decryptedDepartment.setName(encryptionService.decrypt(encryptedDepartment.getName()));
+        return decryptedDepartment;
+    }
 
 }

@@ -1,15 +1,12 @@
 package EmployeePackage.Services;
-import EmployeePackage.Entities.AddressEntity;
 import EmployeePackage.Entities.DepartmentEntity;
 import EmployeePackage.Entities.EmployeeEntity;
 import EmployeePackage.Extras.APIResponse;
+import EmployeePackage.Extras.CustomException;
 import EmployeePackage.Extras.ValidationServices;
 import EmployeePackage.Repositories.EmployeeRepo;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -21,7 +18,6 @@ public class EmployeeService extends ValidationServices {
 
     @Autowired
     DepartmentService departmentService;
-
 
     public APIResponse createEmployeeService(EmployeeEntity employeeEntity){
 
@@ -62,39 +58,18 @@ public class EmployeeService extends ValidationServices {
     }
 
     public APIResponse updateEmployee(EmployeeEntity newEmployee, int id) {
-        Optional<EmployeeEntity> optionalExistingEmployee = employeeRepo.findById(id);
-        if (optionalExistingEmployee.isEmpty()) {
-            return new APIResponse<>(200.1, "Employee Not Found", null);
-        }
+        EmployeeEntity existingEmployee = employeeRepo.findById(id)
+                .orElseThrow(() -> new CustomException(404,"Employee Not Found"));
+        newEmployee.setId(existingEmployee.getId());
+        newEmployee.setPayslips(existingEmployee.getPayslips());
+        newEmployee.hasDefault();
+        employeeRepo.save(newEmployee);
 
-
-        EmployeeEntity existingEmployee = optionalExistingEmployee.get();
-
-        DepartmentEntity newDepartment = newEmployee.getDepartment();
-        AddressEntity newAddress = newEmployee.getAddress();
-        if(newDepartment!=null){
-            existingEmployee.setDepartment((DepartmentEntity) departmentService.GetDepartment(newDepartment.getId()).getBody());
-        }
-
-        if(newAddress != null){
-            existingEmployee.setAddress(newAddress);
-        }
-
-        existingEmployee.updateEntity(newEmployee);
-
-
-        //existingEmployee.setDepartment((DepartmentEntity) departmentService.GetDepartment(existingEmployee.getDepartment().getId()).getBody());
-
-        employeeRepo.save(existingEmployee);
-        return new APIResponse<>(200, "Employee Updated Successfully", existingEmployee);
+        return new APIResponse<>(200, "Employee Updated Successfully", newEmployee);
     }
 
     public boolean isExistById(int id){
         return employeeRepo.existsById(id);
-    }
-
-    public boolean isExistByEntity(EmployeeEntity employeeEntity){
-        return employeeRepo.existsById(employeeEntity.getId());
     }
 
 }
