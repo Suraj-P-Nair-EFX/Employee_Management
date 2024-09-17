@@ -1,8 +1,7 @@
-package EmployeePackage.Entities;
+package employee_package.entities;
+import employee_package.extras.CustomException;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import java.util.Objects;
 
@@ -27,8 +26,9 @@ public class PayslipEntity {
     @JoinColumn(name = "employee_id", nullable = false)
     private EmployeeEntity employee;
 
-    public boolean hasDefault(){
-        return basicSalary == -1 || allowance == -1 || deductions == -1 || bonus == -1 || presentDays == -1 || totalDays == -1 || month == null;
+    public void hasDefault(){
+        if(basicSalary == -1 || allowance == -1 || deductions == -1 || bonus == -1 || presentDays == -1 || totalDays == -1 || month == null)
+            throw new CustomException(400,"Full Details Not Provided");
     }
 
     @PrePersist
@@ -43,20 +43,21 @@ public class PayslipEntity {
         else{tax = (((totalSalary-15_00_000) * 0.3) + (0.2 * 3_00_000) + (2_00_000 * 0.15) + (0.1 * 3_00_000) + (0.05 * 4_00_000));}
 
         tax /= 12;
-
-
-        finalSalary = basicSalary*(presentDays/totalDays) + allowance - deductions + bonus -tax;
+        finalSalary = basicSalary*((double)presentDays/totalDays) + allowance - deductions + bonus -tax;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PayslipEntity that)) return false;
-        return Objects.equals(month, that.month) && Objects.equals(employee, that.employee);
+        return
+                Objects.equals(employee, that.employee) &&
+                        (month != null ? month.equalsIgnoreCase(that.month) : that.month == null);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(month, employee);
+        return Objects.hash(employee, month != null ? month.toLowerCase() : null);
     }
+
 }

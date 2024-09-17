@@ -1,9 +1,8 @@
-package EmployeePackage.Services;
+package employee_package.services;
 
-import EmployeePackage.Extras.CustomException;
-import EmployeePackage.Extras.EncryptionConfig;
+import employee_package.extras.CustomException;
+import employee_package.extras.EncryptionConfig;
 import org.springframework.stereotype.Service;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -18,7 +17,6 @@ public class EncryptionService {
     private static final int GCM_IV_LENGTH = 12;
     private static final int GCM_TAG_LENGTH = 16;
     private static final String ENCRYPTION_ALGORITHM = "AES/GCM/NoPadding";
-
     private final EncryptionConfig encryptionConfig;
     private final SecureRandom secureRandom;
 

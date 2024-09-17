@@ -1,4 +1,4 @@
-package EmployeePackage.Extras;
+package employee_package.extras;
 import lombok.Getter;
 
 @Getter

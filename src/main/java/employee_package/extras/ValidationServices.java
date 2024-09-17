@@ -1,8 +1,4 @@
-package EmployeePackage.Extras;
-import EmployeePackage.Entities.EmployeeEntity;
-import EmployeePackage.Services.EmployeeService;
-import EmployeePackage.Services.PayslipService;
-import org.springframework.beans.factory.annotation.Autowired;
+package employee_package.extras;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

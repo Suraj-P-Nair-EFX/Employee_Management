@@ -1,17 +1,18 @@
-//package EmployeePackage.Services;
+//package employee_package.services;
 //
-//import EmployeePackage.Entities.AddressEntity;
-//import EmployeePackage.Entities.DepartmentEntity;
-//import EmployeePackage.Entities.EmployeeEntity;
-//import EmployeePackage.Extras.APIResponse;
-//import EmployeePackage.Repositories.EmployeeRepo;
+//
+//import employee_package.entities.AddressEntity;
+//import employee_package.entities.DepartmentEntity;
+//import employee_package.entities.EmployeeEntity;
+//import employee_package.extras.APIResponse;
+//import employee_package.repositories.EmployeeRepo;
+//
 //import org.junit.jupiter.api.Test;
 //import org.mockito.InjectMocks;
 //import org.mockito.Mock;
 //import org.mockito.MockitoAnnotations;
 //
-//import java.util.List;
-//import java.util.Optional;
+//
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.mockito.Mockito.when;
@@ -37,7 +38,7 @@
 //        DepartmentEntity department = new DepartmentEntity(1, "HR");
 //        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department,null);
 //
-//        when(departmentService.GetDepartment(department.getId())).thenReturn(new APIResponse<>(200, "Department Found Successfully", department));
+//        when(departmentService.getDepartment(department.getId())).thenReturn(new APIResponse<>(200, "Department Found Successfully", department));
 //        when(employeeRepo.save(employee)).thenReturn(employee);
 //        when(employeeRepo.existsById(employee.getId())).thenReturn(false);
 //
@@ -46,7 +47,7 @@
 //        assertEquals(200, response.getErrorCode());
 //        assertEquals("Employee Created Successfully", response.getMessage());
 //    }
-//
+
 //    @Test
 //    public void testCreateEmployee_NoDepartment_BadRequest() {
 //        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);

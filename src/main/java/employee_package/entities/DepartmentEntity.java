@@ -1,6 +1,6 @@
-package EmployeePackage.Entities;
+package employee_package.entities;
 
-import EmployeePackage.Extras.CustomException;
+import employee_package.extras.CustomException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -22,13 +22,11 @@ public class DepartmentEntity {
 
     public void hasDefault(){
         if(id == null  || name == null){
-            throw new CustomException(200.1,"Has Default Department");
+            throw new CustomException(200.1,"Has Default DepartmentEntity");
         }
     }
 
-    public void setPartialNull(){
-        name = null;
-    }
+
 
     public Integer getId() {
         if(id==null){
