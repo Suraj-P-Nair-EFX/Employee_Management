@@ -17,6 +17,7 @@ public class EncryptionService {
     private static final int GCM_IV_LENGTH = 12;
     private static final int GCM_TAG_LENGTH = 16;
     private static final String ENCRYPTION_ALGORITHM = "AES/GCM/NoPadding";
+
     private final EncryptionConfig encryptionConfig;
     private final SecureRandom secureRandom;
 

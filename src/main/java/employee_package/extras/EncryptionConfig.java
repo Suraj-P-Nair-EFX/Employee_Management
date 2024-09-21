@@ -9,5 +9,4 @@ import org.springframework.context.annotation.Configuration;
 public class EncryptionConfig {
     @Value("${app.encryption.secret-key}")
     private String secretKey;
-
 }

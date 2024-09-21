@@ -12,6 +12,4 @@ public class ValidationServices {
             throw new CustomException(200.1,"Invalid Characters Present");
         }
     }
-
-
 }

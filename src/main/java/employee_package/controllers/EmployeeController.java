@@ -29,9 +29,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee") // GET ALL EMPLOYEES
-    ResponseEntity<APIResponse<List<EmployeeEntity>>> getEmployee() {
+    ResponseEntity<APIResponse<List<EmployeeEntity>>> getEmployee(@RequestParam int page,@RequestParam int size) {
         logger.info("Received request to get all employees");
-        APIResponse<List<EmployeeEntity>> apiResponse = employeeService.getAllEmployeeService();
+        APIResponse<List<EmployeeEntity>> apiResponse = employeeService.getAllEmployeeService(page,size);
         logger.info("Employees retrieved successfully");
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
@@ -59,4 +59,6 @@ public class EmployeeController {
         logger.info("Employee updated successfully");
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
+
 }

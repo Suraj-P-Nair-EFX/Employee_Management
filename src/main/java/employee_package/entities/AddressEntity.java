@@ -14,9 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class AddressEntity {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id ;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -1,4 +1,5 @@
 package employee_package.entities;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import employee_package.extras.CustomException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -36,15 +37,21 @@ public class EmployeeEntity {
     @Getter
     private List<PayslipEntity> payslips;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "employee",orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    @Getter
+    private SalaryEntity salary;
+
+
     public void hasDefault(){
         getDepartment();
-        getAddress();
+        //getAddress();
         address.hasDefault();
         if(name == null || age == null || id == null){
             throw new CustomException(200.1,"Default values Employee");
         }
     }
-
 
     public AddressEntity getAddress() {
         if(address == null)
@@ -65,8 +72,8 @@ public class EmployeeEntity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
-                ", address=" + address +
-                ", department=" + department +
+                ", address=" + address.getId() +
+                ", department=" + department.getId() +
                 '}';
     }
 
@@ -77,5 +84,6 @@ public class EmployeeEntity {
         this.address = employee.getAddress();
         this.department = employee.getDepartment();
         this.payslips = employee.payslips;
+        this.salary = employee.salary;
     }
 }

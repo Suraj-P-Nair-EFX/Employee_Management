@@ -12,10 +12,8 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class DepartmentEntity {
-
     @Id
     private Integer id = null;
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Getter
     private String name = null;
@@ -26,13 +24,10 @@ public class DepartmentEntity {
         }
     }
 
-
-
     public Integer getId() {
         if(id==null){
             throw new CustomException(200.1,"Department ID not Entered");
         }
         return id;
     }
-
 }

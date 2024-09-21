@@ -7,22 +7,30 @@ import employee_package.extras.CustomException;
 import employee_package.extras.ValidationServices;
 import employee_package.repositories.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class EmployeeService extends ValidationServices {
     @Autowired EmployeeRepo employeeRepo;
-
     @Autowired DepartmentService departmentService;
-
     @Autowired  EncryptionService encryptionService;
 
     //CREATE EMPLOYEE //CLEAR
     public APIResponse<EmployeeEntity> createEmployeeService(EmployeeEntity employeeEntity){
+
         APIResponse<DepartmentEntity> apiResponse = departmentService.getDepartmentDecrypted(employeeEntity.getDepartment().getId());
+
+        employeeEntity.getAddress().setId(employeeEntity.getId());
+
         employeeEntity.setDepartment(apiResponse.getBody());
+
         employeeEntity.hasDefault();
+
         invalidCharCheck(employeeEntity.toString());
 
         if(employeeRepo.existsById(employeeEntity.getId())) throw new CustomException(400,"Employee Already Exists");
@@ -31,17 +39,20 @@ public class EmployeeService extends ValidationServices {
     }
 
     //GET ALL EMPLOYEES //CLEAR
-    public APIResponse<List<EmployeeEntity>> getAllEmployeeService(){
-        List<EmployeeEntity> employees = employeeRepo.findAll();
+    public APIResponse<List<EmployeeEntity>> getAllEmployeeService(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<EmployeeEntity> employeePage = employeeRepo.findAll(pageable);
 
-        if (employees.isEmpty()) {
-            return new APIResponse<>(200, "No Employees Found", null);
+        if (page >= employeePage.getTotalPages() && employeePage.getTotalPages() > 0) {
+            throw new CustomException(404, "Not Found");
         }
-        List<EmployeeEntity> decryptedEmployees = employees.stream()
+        if (employeePage.isEmpty()) {
+            throw new CustomException(404, "No Employees Found");
+        }
+        List<EmployeeEntity> decryptedEmployees = employeePage.getContent().stream()
                 .map(this::decryptEmployee)
                 .toList();
-
-        return new APIResponse<>(200, "Employees Found Successfully", decryptedEmployees);
+        return new APIResponse<>(200, "Page " + page + " Found Successfully" , decryptedEmployees);
     }
 
     //GET SINGLE EMPLOYEE ENCRYPTED //CLEAR
@@ -59,6 +70,7 @@ public class EmployeeService extends ValidationServices {
     //DELETE EMPLOYEE //CLEAR
     public APIResponse<EmployeeEntity> deleteEmployee(int id){
         EmployeeEntity employee = getEmployeeByIdEncrypted(id).getBody();
+
         employeeRepo.delete(employee);
         return new APIResponse<>(200, "Employee Deleted Successfully", decryptEmployee(employee));
     }
@@ -66,10 +78,15 @@ public class EmployeeService extends ValidationServices {
     //UPDATE EMPLOYEE //CLEAR
     public APIResponse<EmployeeEntity> updateEmployee(EmployeeEntity newEmployee, int id) {
         EmployeeEntity existingEmployee = getEmployeeByIdDecrypted(id).getBody();
+
         newEmployee.setId(id);
+
         newEmployee.hasDefault();
+
         newEmployee.setPayslips(existingEmployee.getPayslips());
+
         newEmployee.getAddress().setId(existingEmployee.getAddress().getId());
+
         newEmployee.setDepartment(departmentService.getDepartmentDecrypted(newEmployee.getDepartment().getId()).getBody());
         EmployeeEntity employee = employeeRepo.save(encryptEmployee(newEmployee));
         return new APIResponse<>(200, "Employee Updated Successfully", decryptEmployee(employee));
