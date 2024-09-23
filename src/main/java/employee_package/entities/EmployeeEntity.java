@@ -1,5 +1,5 @@
 package employee_package.entities;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 import employee_package.extras.CustomException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -46,7 +46,7 @@ public class EmployeeEntity {
 
     public void hasDefault(){
         getDepartment();
-        //getAddress();
+        getAddress();
         address.hasDefault();
         if(name == null || age == null || id == null){
             throw new CustomException(200.1,"Default values Employee");

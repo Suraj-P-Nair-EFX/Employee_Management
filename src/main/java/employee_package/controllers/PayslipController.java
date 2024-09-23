@@ -18,9 +18,7 @@ import java.util.List;
 public class PayslipController {
 
     private static final Logger logger = LoggerFactory.getLogger(PayslipController.class);
-
-    @Autowired
-    PayslipService payslipService;
+    @Autowired PayslipService payslipService;
 
     @PostMapping("/employee/{id}/payslip") // CREATE PAYSLIP
     ResponseEntity<APIResponse<PayslipEntity>> postPayslip(@RequestBody PayslipEntity payslipEntity, @PathVariable int id) {

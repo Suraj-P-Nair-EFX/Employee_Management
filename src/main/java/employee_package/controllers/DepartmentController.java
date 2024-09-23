@@ -16,9 +16,7 @@ import java.util.List;
 @Controller
 public class DepartmentController {
     private static final Logger logger = LoggerFactory.getLogger(DepartmentController.class);
-
-    @Autowired
-    DepartmentService departmentService;
+    @Autowired DepartmentService departmentService;
 
     @PostMapping("/department") // CREATE DEPARTMENT
     ResponseEntity<APIResponse<DepartmentEntity>> postCreateDepartment(@RequestBody DepartmentEntity departmentEntity) {

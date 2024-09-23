@@ -1,109 +1,90 @@
-//package EmployeePackage.Controllers;
-//
-//import EmployeePackage.Entities.AddressEntity;
-//import EmployeePackage.Entities.DepartmentEntity;
-//import EmployeePackage.Entities.EmployeeEntity;
-//import EmployeePackage.Extras.APIResponse;
-//import EmployeePackage.Services.EmployeeService;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.web.servlet.MockMvc;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.ArgumentMatchers.anyInt;
-//import static org.mockito.Mockito.verify;
-//import static org.mockito.Mockito.when;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//
-//@WebMvcTest(EmployeeController.class)
-//public class EmployeeControllerTests {
-//
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private ObjectMapper objectMapper;
-//
-//    @MockBean
-//    private EmployeeService employeeService;
-//
-//    @Test
-//    public void testPostEmployee_Success() throws Exception {
-//        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);
-//        DepartmentEntity department = new DepartmentEntity(101, "HR");
-//        EmployeeEntity employee = new EmployeeEntity(200, "John Doe", 30, address, department,null);
-//
-//        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(200, "Employee Created Successfully", employee);
-//
-//
-//        when(employeeService.createEmployeeService(any(EmployeeEntity.class))).thenReturn(apiResponse);
-//
-//        mockMvc.perform(post("/employee")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(employee)))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.message").value("Employee Created Successfully"));
-//
-//        verify(employeeService).createEmployeeService(any(EmployeeEntity.class));
-//    }
-//
-//    @Test
-//    public void testGetAllEmployees_Success() throws Exception {
-//        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(200, "Employees Found Successfully", null);
-//
-//        when(employeeService.getAllEmployeeService()).thenReturn(apiResponse);
-//
-//        mockMvc.perform(get("/employee"))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.message").value("Employees Found Successfully"));
-//    }
-//
-//    @Test
-//    public void testGetEmployeeById_Success() throws Exception {
-//        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);
-//        DepartmentEntity department = new DepartmentEntity(1, "HR");
-//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department,null);
-//        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(200, "Employee Found Successfully", employee);
-//
-//        when(employeeService.getEmployeeById(anyInt())).thenReturn(apiResponse);
-//
-//        mockMvc.perform(get("/employee/1"))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.message").value("Employee Found Successfully"));
-//    }
-//
-//    @Test
-//    public void testDeleteEmployee_Success() throws Exception {
-//        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);
-//        DepartmentEntity department = new DepartmentEntity(1, "HR");
-//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department,null);
-//        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(200, "Employee Deleted Successfully", employee);
-//
-//        when(employeeService.deleteEmployee(anyInt())).thenReturn(apiResponse);
-//
-//        mockMvc.perform(delete("/employee/1"))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.message").value("Employee Deleted Successfully"));
-//    }
-//
-//    @Test
-//    public void testUpdateEmployee_Success() throws Exception {
-//        AddressEntity address = new AddressEntity("123 Main St", "City", 12345);
-//        DepartmentEntity department = new DepartmentEntity(1, "HR");
-//        EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, department,null);
-//        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(200, "Employee Updated Successfully", employee);
-//
-//        when(employeeService.updateEmployee(any(EmployeeEntity.class), anyInt())).thenReturn(apiResponse);
-//
-//        mockMvc.perform(post("/employee/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(employee)))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.message").value("Employee Updated Successfully"));
-//    }
-//}
+package employee_package.controllers;
+
+import employee_package.entities.EmployeeEntity;
+import employee_package.extras.APIResponse;
+import employee_package.services.EmployeeService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import java.util.Collections;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+class EmployeeControllerTests {
+
+    @InjectMocks private EmployeeController employeeController;
+    @Mock private EmployeeService employeeService;
+    private EmployeeEntity employeeEntity;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        employeeEntity = new EmployeeEntity();
+    }
+
+    @Test
+    void postEmployee_ShouldCreateEmployee() {
+        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(201, "Employee created", employeeEntity);
+        when(employeeService.createEmployeeService(any(EmployeeEntity.class))).thenReturn(apiResponse);
+
+        ResponseEntity<APIResponse<EmployeeEntity>> response = employeeController.postEmployee(employeeEntity);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(apiResponse, response.getBody());
+        verify(employeeService, times(1)).createEmployeeService(employeeEntity);
+    }
+
+    @Test
+    void getEmployee_ShouldReturnAllEmployees() {
+        APIResponse<List<EmployeeEntity>> apiResponse = new APIResponse<>(200, "Employees retrieved", Collections.singletonList(employeeEntity));
+        when(employeeService.getAllEmployeeService(0, 10)).thenReturn(apiResponse);
+
+        ResponseEntity<APIResponse<List<EmployeeEntity>>> response = employeeController.getEmployee(0, 10);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(apiResponse, response.getBody());
+        verify(employeeService, times(1)).getAllEmployeeService(0, 10);
+    }
+
+    @Test
+    void getEmployeeById_ShouldReturnEmployee() {
+        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(200, "Employee retrieved", employeeEntity);
+        when(employeeService.getEmployeeByIdDecrypted(1)).thenReturn(apiResponse);
+
+        ResponseEntity<APIResponse<EmployeeEntity>> response = employeeController.getEmployeeById(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(apiResponse, response.getBody());
+        verify(employeeService, times(1)).getEmployeeByIdDecrypted(1);
+    }
+
+    @Test
+    void deleteEmployee_ShouldDeleteEmployee() {
+        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(200, "Employee deleted", employeeEntity);
+        when(employeeService.deleteEmployee(1)).thenReturn(apiResponse);
+
+        ResponseEntity<APIResponse<EmployeeEntity>> response = employeeController.deleteEmployee(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(apiResponse, response.getBody());
+        verify(employeeService, times(1)).deleteEmployee(1);
+    }
+
+    @Test
+    void updateEmployee_ShouldUpdateEmployee() {
+        APIResponse<EmployeeEntity> apiResponse = new APIResponse<>(200, "Employee updated", employeeEntity);
+        when(employeeService.updateEmployee(any(EmployeeEntity.class), eq(1))).thenReturn(apiResponse);
+
+        ResponseEntity<APIResponse<EmployeeEntity>> response = employeeController.updateEmployee(employeeEntity, 1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(apiResponse, response.getBody());
+        verify(employeeService, times(1)).updateEmployee(employeeEntity, 1);
+    }
+}

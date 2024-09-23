@@ -6,9 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface SalaryRepo extends JpaRepository<SalaryEntity, EmployeeEntity> {
+public interface SalaryRepo extends JpaRepository<SalaryEntity, Integer> {
 
-    Optional<SalaryEntity> findByEmployeeId(int id);
-    boolean existsByEmployee(EmployeeEntity employee);
-
+        SalaryEntity findByEmployee(EmployeeEntity employee);
 }

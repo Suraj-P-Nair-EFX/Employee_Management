@@ -1,7 +1,10 @@
 package employee_package.controllers;
 
+import employee_package.entities.AddressEntity;
 import employee_package.entities.EmployeeEntity;
 import employee_package.extras.APIResponse;
+import employee_package.repositories.AddressRepo;
+import employee_package.repositories.EmployeeRepo;
 import employee_package.services.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +17,8 @@ import java.util.List;
 
 @RestController
 public class EmployeeController {
-
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
-
-    @Autowired
-    EmployeeService employeeService;
+    @Autowired EmployeeService employeeService;
 
     @PostMapping("/employee") // CREATE EMPLOYEE
     ResponseEntity<APIResponse<EmployeeEntity>> postEmployee(@RequestBody EmployeeEntity employeeEntity) {
@@ -59,6 +59,5 @@ public class EmployeeController {
         logger.info("Employee updated successfully");
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
-
 
 }

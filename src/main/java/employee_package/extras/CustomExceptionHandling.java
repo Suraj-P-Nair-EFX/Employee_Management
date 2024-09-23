@@ -35,4 +35,5 @@ public class CustomExceptionHandling extends RuntimeException{
         APIResponse<Void> apiResponse = new APIResponse<>(404,"Not Found",null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
     }
+
 }

@@ -24,16 +24,22 @@ public class EmployeeService extends ValidationServices {
     public APIResponse<EmployeeEntity> createEmployeeService(EmployeeEntity employeeEntity){
 
         APIResponse<DepartmentEntity> apiResponse = departmentService.getDepartmentDecrypted(employeeEntity.getDepartment().getId());
+        System.out.println("1");
 
         employeeEntity.getAddress().setId(employeeEntity.getId());
+        System.out.println("2");
 
         employeeEntity.setDepartment(apiResponse.getBody());
+        System.out.println("3");
 
         employeeEntity.hasDefault();
 
+
         invalidCharCheck(employeeEntity.toString());
 
+
         if(employeeRepo.existsById(employeeEntity.getId())) throw new CustomException(400,"Employee Already Exists");
+
 
         return new APIResponse<>(200,"Employee Created Successfully",decryptEmployee(employeeRepo.save(encryptEmployee(employeeEntity))));
     }
@@ -46,9 +52,11 @@ public class EmployeeService extends ValidationServices {
         if (page >= employeePage.getTotalPages() && employeePage.getTotalPages() > 0) {
             throw new CustomException(404, "Not Found");
         }
+
         if (employeePage.isEmpty()) {
             throw new CustomException(404, "No Employees Found");
         }
+
         List<EmployeeEntity> decryptedEmployees = employeePage.getContent().stream()
                 .map(this::decryptEmployee)
                 .toList();
@@ -95,35 +103,44 @@ public class EmployeeService extends ValidationServices {
     //ENCRYPT EMPLOYEE //CLEAR
     public EmployeeEntity encryptEmployee(EmployeeEntity employee){
 
+        System.out.println("encrypt 1");
         employee.setName(encryptionService.encrypt(employee.getName()));
-
+        System.out.println("encrypt 2");
         AddressEntity address = employee.getAddress();
+        System.out.println("encrypt 3");
         address.setPrimAddress(encryptionService.encrypt(address.getPrimAddress()));
+        System.out.println("encrypt 4");
         address.setCity(encryptionService.encrypt(address.getCity()));
-
+        System.out.println("encrypt 5");
         employee.setDepartment(departmentService.getDepartmentEncrypted(employee.getDepartment().getId()).getBody());
-
-
+        System.out.println("encrypt 6");
         employee.setAddress(address);
-
+        System.out.println("encrypt finish");
         return employee;
     }
 
     //DECRYPT EMPLOYEE //CLEAR
     public EmployeeEntity decryptEmployee(EmployeeEntity employee) {
+
+        System.out.println("decrypt 1");
         employee.setName(encryptionService.decrypt(employee.getName()));
-
+        System.out.println("decrypt 2");
         AddressEntity address = employee.getAddress();
+        System.out.println("decrypt 3");
         AddressEntity decryptedAddress = new AddressEntity(address.getId(),encryptionService.decrypt(address.getPrimAddress()),encryptionService.decrypt(address.getCity()),address.getPincode());
-
+        System.out.println("decrypt 4");
         employee.setAddress(decryptedAddress);
-
-
+        System.out.println("decrypt 5");
         DepartmentEntity department = employee.getDepartment();
+        System.out.println("decrypt 6");
         DepartmentEntity decryptedDepartment = new DepartmentEntity(department.getId(),encryptionService.decrypt(department.getName()));
+        System.out.println("decrypt 7");
         employee.setDepartment(decryptedDepartment);
-
+        System.out.println("decrypt finish  ");
         return employee;
     }
+
+
+
 
 }

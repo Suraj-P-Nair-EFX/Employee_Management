@@ -39,8 +39,8 @@ public class EncryptionService {
             byteBuffer.put(iv);
             byteBuffer.put(ciphertext);
             return Base64.getEncoder().encodeToString(byteBuffer.array());
-        } catch (GeneralSecurityException e) {
-            throw new CustomException(500,e.getMessage());
+        } catch (Exception e) {
+            throw new CustomException(500, "Error While Encrypting");
         }
     }
 
@@ -58,8 +58,8 @@ public class EncryptionService {
             cipher.init(Cipher.DECRYPT_MODE, key, gcmParams);
             byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
             return new String(decryptedBytes, StandardCharsets.UTF_8);
-        } catch (GeneralSecurityException e) {
-            throw new CustomException(500,e.getMessage());
+        } catch (Exception e) {
+            throw new CustomException(500, "Error While Decrypting");
         }
     }
 }

@@ -29,7 +29,7 @@ public class DepartmentService extends ValidationServices {
 
     //GET SINGLE DEPARTMENT DECRYPTED //CLEAR
     public APIResponse<DepartmentEntity> getDepartmentDecrypted(int id){
-        DepartmentEntity department = departmentRepo.findById(id).orElseThrow (()->new CustomException(404,"Department Not Found"));
+        DepartmentEntity department = departmentRepo.findById(id).orElseThrow(()-> new CustomException(404,"Department Not Found"));
         return new APIResponse<>(200, "Department Found Successfully", decryptDepartment(department));
     }
 
@@ -53,9 +53,9 @@ public class DepartmentService extends ValidationServices {
 
     //DELETE DEPARTMENT //CLEAR
     public APIResponse<DepartmentEntity> deleteDepartment(int id){
-        DepartmentEntity department = getDepartmentDecrypted(id).getBody();
+        DepartmentEntity department = getDepartmentEncrypted(id).getBody();
         departmentRepo.delete(department);
-        return new APIResponse<>(200,"Department Deleted Successfully",department );
+        return new APIResponse<>(200,"Department Deleted Successfully",decryptDepartment(department));
     }
 
     //UPDATE DEPARTMENT //CLEAR

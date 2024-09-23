@@ -5,11 +5,11 @@ import java.util.regex.Pattern;
 
 public class ValidationServices {
 
-    public void invalidCharCheck(String s){
+    public static void invalidCharCheck(String s){
         Pattern pattern = Pattern.compile("[#/@^*?]",Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(s);
         if(matcher.find()){
-            throw new CustomException(200.1,"Invalid Characters Present");
+            throw new CustomException(400,"Invalid Characters Present");
         }
     }
 }

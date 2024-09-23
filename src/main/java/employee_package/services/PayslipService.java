@@ -37,6 +37,7 @@ public class PayslipService {
     //GET ENCRYPTED PAYSLIPS OF ONE EMPLOYEE //CLEAR
     public APIResponse<List<PayslipEntity>> getPayslipEncrypted(int id){
         List<PayslipEntity> payslips = payslipRepo.findByEmployeeId(id);
+
         if(payslips.isEmpty()) return new APIResponse<>(200.1, payslipNonExistent, Collections.emptyList());
         return new APIResponse<>(200,"Payslips Retrieved Successfully", payslips);
     }
