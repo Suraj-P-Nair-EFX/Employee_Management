@@ -43,7 +43,7 @@ public class DepartmentService extends ValidationServices {
     public APIResponse<List<DepartmentEntity>> getAllDepartment(){
         List<DepartmentEntity> departments = departmentRepo.findAll();
         if(departments.isEmpty()){
-            throw new CustomException(400,"No Departments To Show");
+            throw new CustomException(404,"No Departments To Show");
         }
         List<DepartmentEntity> decryptedDepartments = departments.stream()
                 .map(this::decryptDepartment)

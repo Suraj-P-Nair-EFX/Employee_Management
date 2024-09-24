@@ -14,7 +14,7 @@ class EmployeeEntityTests {
         DepartmentEntity department = new DepartmentEntity(1, "HR");
         EmployeeEntity employee = new EmployeeEntity(null, null, null, address, department, null, null);
         CustomException exception = assertThrows(CustomException.class, employee::hasDefault);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Default values Employee", exception.getMessage());
     }
 
@@ -34,7 +34,7 @@ class EmployeeEntityTests {
         DepartmentEntity department = new DepartmentEntity(1, "HR");
         EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, null, department, null, null);
         CustomException exception = assertThrows(CustomException.class, employee::getAddress);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Address Not Entered", exception.getMessage());
     }
 
@@ -43,7 +43,7 @@ class EmployeeEntityTests {
         AddressEntity address = new AddressEntity(1, "123 Main St", "City", 12345);
         EmployeeEntity employee = new EmployeeEntity(1, "John Doe", 30, address, null, null, null);
         CustomException exception = assertThrows(CustomException.class, employee::getDepartment);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Department Not Entered", exception.getMessage());
     }
 
@@ -81,7 +81,7 @@ class EmployeeEntityTests {
         EmployeeEntity employee = new EmployeeEntity(null, "John Doe", 30, address, department, null, null);
 
         CustomException exception = assertThrows(CustomException.class, employee::hasDefault);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Default values Employee", exception.getMessage());
     }
 
@@ -92,7 +92,7 @@ class EmployeeEntityTests {
         EmployeeEntity employee = new EmployeeEntity(1, null, 30, address, department, null, null);
 
         CustomException exception = assertThrows(CustomException.class, employee::hasDefault);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Default values Employee", exception.getMessage());
     }
 
@@ -103,7 +103,7 @@ class EmployeeEntityTests {
         EmployeeEntity employee = new EmployeeEntity(1, "John Doe", null, address, department, null, null);
 
         CustomException exception = assertThrows(CustomException.class, employee::hasDefault);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Default values Employee", exception.getMessage());
     }
 

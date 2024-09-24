@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @TestPropertySource(properties = "app.encryption.secret-key=mytestsecretkey")
-class ConfigurationTests {
+class EncryptionConfigurationTests {
 
     @Autowired
     private EncryptionConfig encryptionConfig;

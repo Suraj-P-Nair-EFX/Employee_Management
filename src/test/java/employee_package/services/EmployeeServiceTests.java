@@ -149,4 +149,73 @@ class EmployeeServiceTests {
         assertEquals("No Employees Found", exception.getMessage());
     }
 
+    @Test
+    void getAllEmployeeService_ShouldReturnEmployees_WhenValidPageAndSize() {
+        when(employeeRepo.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of(employeeEntity)));
+
+        APIResponse<List<EmployeeEntity>> response = employeeService.getAllEmployeeService(0, 10);
+
+        assertEquals(200, response.getErrorCode());
+        assertEquals("Page 0 Found Successfully", response.getMessage());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(1, response.getBody().size());
+        assertEquals(employeeEntity, response.getBody().get(0));
+
+        verify(employeeRepo, times(1)).findAll(any(Pageable.class));
+    }
+
+    @Test
+    void getAllEmployeeService_ShouldThrowException_WhenPageSizeIsZero() {
+        CustomException exception = assertThrows(CustomException.class, () -> employeeService.getAllEmployeeService(0, 0));
+        assertEquals(404, exception.getErrorCode());
+        assertEquals("Page size must be greater than zero", exception.getMessage());
+    }
+
+    @Test
+    void getAllEmployeeService_ShouldThrowException_WhenPageIsNegative() {
+        CustomException exception = assertThrows(CustomException.class, () -> employeeService.getAllEmployeeService(-1, 10));
+        assertEquals(404, exception.getErrorCode());
+        assertEquals("Page number must be non-negative", exception.getMessage());
+    }
+
+    @Test
+    void getAllEmployeeService_ShouldThrowException_WhenPageIsGreaterThanTotalPages() {
+        when(employeeRepo.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of(employeeEntity)));
+
+        CustomException exception = assertThrows(CustomException.class, () -> employeeService.getAllEmployeeService(2, 1));
+        assertEquals(404, exception.getErrorCode());
+        assertEquals("Not Found", exception.getMessage());
+    }
+
+    @Test
+    void getAllEmployeeService_ShouldHandleLargePageSize() {
+        when(employeeRepo.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of(employeeEntity)));
+
+        APIResponse<List<EmployeeEntity>> response = employeeService.getAllEmployeeService(0, 1000);
+
+        assertEquals(200, response.getErrorCode());
+        assertEquals("Page 0 Found Successfully", response.getMessage());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(1, response.getBody().size());
+        assertEquals(employeeEntity, response.getBody().get(0));
+
+        verify(employeeRepo, times(1)).findAll(any(Pageable.class));
+    }
+
+    @Test
+    void getAllEmployeeService_ShouldDecryptEmployees() {
+        when(employeeRepo.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of(employeeEntity)));
+        when(encryptionService.decrypt(any())).thenReturn("decryptedName");
+
+        APIResponse<List<EmployeeEntity>> response = employeeService.getAllEmployeeService(0, 10);
+
+        assertEquals(200, response.getErrorCode());
+        assertEquals("Page 0 Found Successfully", response.getMessage());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals("decryptedName", response.getBody().get(0).getName()); // Assuming name is decrypted
+
+        verify(employeeRepo, times(1)).findAll(any(Pageable.class));
+    }
+
+
 }

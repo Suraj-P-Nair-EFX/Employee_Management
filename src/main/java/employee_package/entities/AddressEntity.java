@@ -26,7 +26,7 @@ public class AddressEntity {
 
     public void hasDefault(){
         if(pincode == null || city == null || primAddress == null){
-            throw new CustomException(200.1,"Has Default in Address");
+            throw new CustomException(400.1,"Has Default in Address");
         }
     }
 }

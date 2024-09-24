@@ -20,13 +20,13 @@ public class DepartmentEntity {
 
     public void hasDefault(){
         if(id == null  || name == null){
-            throw new CustomException(200.1,"Has Default DepartmentEntity");
+            throw new CustomException(400.1,"Has Default DepartmentEntity");
         }
     }
 
     public Integer getId() {
         if(id==null){
-            throw new CustomException(200.1,"Department ID not Entered");
+            throw new CustomException(400.1,"Department ID not Entered");
         }
         return id;
     }

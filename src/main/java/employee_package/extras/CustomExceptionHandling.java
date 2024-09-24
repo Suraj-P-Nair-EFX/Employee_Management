@@ -14,7 +14,7 @@ public class CustomExceptionHandling extends RuntimeException{
 
     @ExceptionHandler(value = {HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<APIResponse<Void>> handleHttpMessageNotReadableException(){
-        APIResponse<Void> apiResponse = new APIResponse<>(400,"Invalid Input",null);
+        APIResponse<Void> apiResponse = new APIResponse<>(400.1,"Invalid Input",null);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
 

@@ -16,7 +16,7 @@ class CustomExceptionHandlingTests {
         ResponseEntity<APIResponse<Void>> response = exceptionHandling.handleHttpMessageNotReadableException();
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(400, Objects.requireNonNull(response.getBody()).getErrorCode());
+        assertEquals(400.1, Objects.requireNonNull(response.getBody()).getErrorCode());
         assertEquals("Invalid Input", response.getBody().getMessage());
     }
 

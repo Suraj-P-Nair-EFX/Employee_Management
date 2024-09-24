@@ -96,7 +96,7 @@ class DepartmentServiceTests {
     void getAllDepartment_ShouldThrowException_WhenNoDepartments() {
         when(departmentRepo.findAll()).thenReturn(Collections.emptyList());
         CustomException exception = assertThrows(CustomException.class, () -> departmentService.getAllDepartment());
-        assertEquals(400, exception.getErrorCode());
+        assertEquals(404.0, exception.getErrorCode());
         assertEquals("No Departments To Show", exception.getMessage());
     }
 

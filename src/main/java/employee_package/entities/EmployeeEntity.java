@@ -49,19 +49,19 @@ public class EmployeeEntity {
         getAddress();
         address.hasDefault();
         if(name == null || age == null || id == null){
-            throw new CustomException(200.1,"Default values Employee");
+            throw new CustomException(400.1,"Default values Employee");
         }
     }
 
     public AddressEntity getAddress() {
         if(address == null)
-            throw new CustomException(200.1,"Address Not Entered");
+            throw new CustomException(400.1,"Address Not Entered");
         return address;
     }
 
     public DepartmentEntity getDepartment() {
         if(department == null){
-            throw new CustomException(200.1,"Department Not Entered");
+            throw new CustomException(400.1,"Department Not Entered");
         }
         return department;
     }

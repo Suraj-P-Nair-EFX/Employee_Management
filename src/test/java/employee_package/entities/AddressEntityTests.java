@@ -12,7 +12,7 @@ class AddressEntityTests {
     void hasDefault_ShouldThrowCustomException_WhenAnyFieldIsNull() {
         AddressEntity address = new AddressEntity(1, null, "City", 12345); // primAddress is null
         CustomException exception = assertThrows(CustomException.class, address::hasDefault);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Has Default in Address", exception.getMessage());
     }
 
@@ -20,7 +20,7 @@ class AddressEntityTests {
     void hasDefault_ShouldThrowCustomException_WhenAllFieldsAreNull() {
         AddressEntity address = new AddressEntity(1, null, null, null); // All fields are null
         CustomException exception = assertThrows(CustomException.class, address::hasDefault);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Has Default in Address", exception.getMessage());
     }
 

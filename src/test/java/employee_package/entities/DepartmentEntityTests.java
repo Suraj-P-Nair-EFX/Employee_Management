@@ -12,7 +12,7 @@ class DepartmentEntityTests {
     void hasDefault_ShouldThrowCustomException_WhenIdOrNameIsNull() {
         DepartmentEntity department = new DepartmentEntity(null, "HR"); // id is null
         CustomException exception = assertThrows(CustomException.class, department::hasDefault);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Has Default DepartmentEntity", exception.getMessage());
     }
 
@@ -20,7 +20,7 @@ class DepartmentEntityTests {
     void hasDefault_ShouldThrowCustomException_WhenBothFieldsAreNull() {
         DepartmentEntity department = new DepartmentEntity(null, null); // Both fields are null
         CustomException exception = assertThrows(CustomException.class, department::hasDefault);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Has Default DepartmentEntity", exception.getMessage());
     }
 
@@ -36,7 +36,7 @@ class DepartmentEntityTests {
     void getId_ShouldThrowCustomException_WhenIdIsNull() {
         DepartmentEntity department = new DepartmentEntity(null, "HR"); // id is null
         CustomException exception = assertThrows(CustomException.class, department::getId);
-        assertEquals(200.1, exception.getErrorCode());
+        assertEquals(400.1, exception.getErrorCode());
         assertEquals("Department ID not Entered", exception.getMessage());
     }
 
